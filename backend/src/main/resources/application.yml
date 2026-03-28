@@ -1,0 +1,68 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+  tomcat:
+    threads:
+      max: 300
+      min-spare: 20
+    max-connections: 8192
+    accept-count: 200
+    connection-timeout: 20000
+
+spring:
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql:3306/ragflow_admin?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:ragflow_user}
+    password: ${SPRING_DATASOURCE_PASSWORD:ragflow_pass_2024}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 30
+      minimum-idle: 10
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
+      leak-detection-threshold: 60000
+      pool-name: RagflowHikariCP
+  task:
+    execution:
+      pool:
+        core-size: 8
+        max-size: 32
+        queue-capacity: 1000
+        keep-alive: 60s
+      thread-name-prefix: ragflow-async-
+
+mybatis-plus:
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 30
+
+jwt:
+  secret: ${JWT_SECRET:ragflow_admin_jwt_secret_2024_change_me}
+  expiration: 86400000
+
+ragflow:
+  base-url: ${RAGFLOW_BASE_URL:http://159.138.146.41}
+  api-key: ${RAGFLOW_API_KEY:ragflow-q6dOyf9Pn-K1cWii4aGLsy832oyjoecED1YpsQGtbKA}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    root: warn
+    com.ragflow.admin: info

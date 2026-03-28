@@ -1,0 +1,58 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: ragflow_admin_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ragflow_root_2024
+      MYSQL_DATABASE: ragflow_admin
+      MYSQL_USER: ragflow_user
+      MYSQL_PASSWORD: ragflow_pass_2024
+      TZ: Asia/Shanghai
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pragflow_root_2024"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  backend:
+    image: registry.cn-hangzhou.aliyuncs.com/sxsnamespace01/ragflow-admin-backend:v1.0
+    pull_policy: always
+    container_name: ragflow_admin_backend
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ragflow_admin?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+      SPRING_DATASOURCE_USERNAME: ragflow_user
+      SPRING_DATASOURCE_PASSWORD: ragflow_pass_2024
+      TZ: Asia/Shanghai
+    depends_on:
+      mysql:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  frontend:
+    image: registry.cn-hangzhou.aliyuncs.com/sxsnamespace01/ragflow-admin-frontend:v1.0
+    pull_policy: always
+    container_name: ragflow_admin_frontend
+    restart: always
+    ports:
+      - "10081:80"
+      - "10443:443"
+    volumes:
+      - ./certs:/etc/nginx/certs:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

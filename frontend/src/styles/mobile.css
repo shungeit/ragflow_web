@@ -1,0 +1,187 @@
+/* ============================================================
+   全局基础样式 + 移动端适配
+   ============================================================ */
+
+/* 字体渲染优化 */
+*, *::before, *::after {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+html, body {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB',
+               'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+  background: #f0f2f5;
+  color: #18181b;
+}
+
+/* 选中文本颜色 */
+::selection { background: rgba(64,158,255,.18); color: inherit; }
+
+/* 全局 Element Plus 微调 */
+:root {
+  --el-border-radius-base: 8px;
+  --el-border-radius-small: 6px;
+}
+
+/* 卡片统一圆角 */
+.el-card { border-radius: 10px !important; border-color: #ebebeb !important; }
+.el-card__header { border-bottom-color: #f4f4f5 !important; }
+
+/* 表格表头加粗 */
+.el-table th.el-table__cell .cell {
+  font-weight: 600;
+  color: #27272a;
+  font-size: 13px;
+}
+
+/* 表格行悬停 */
+.el-table__row:hover > td.el-table__cell {
+  background: #fafafa !important;
+}
+
+/* Tag 稍微圆一点 */
+.el-tag { border-radius: 6px !important; }
+
+/* Button 圆角 */
+.el-button { border-radius: 8px !important; font-weight: 500; }
+.el-button--small { border-radius: 6px !important; }
+
+/* Input 圆角 */
+.el-input__wrapper { border-radius: 8px !important; }
+.el-select .el-input__wrapper { border-radius: 8px !important; }
+
+@media (max-width: 767px) {
+
+  /* ----------------------------------------------------------
+     防止 iOS 输入框聚焦自动放大（font-size < 16px 会触发缩放）
+     ---------------------------------------------------------- */
+  input,
+  input[type="text"],
+  input[type="search"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  input[type="tel"],
+  textarea,
+  select,
+  .el-input__inner,
+  .el-textarea__inner {
+    font-size: 16px !important;
+  }
+
+  /* ----------------------------------------------------------
+     弹窗 -> 底部 bottom-sheet 样式
+     ---------------------------------------------------------- */
+  .el-overlay-dialog {
+    align-items: flex-end !important;
+  }
+
+  .el-dialog {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 90svh;
+    max-height: 90vh;
+  }
+
+  .el-dialog__header {
+    border-bottom: 1px solid #f4f4f5;
+    padding: 18px 20px 14px !important;
+  }
+
+  .el-dialog__title {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #18181b !important;
+  }
+
+  .el-dialog__body {
+    overflow-y: auto;
+    max-height: calc(90vh - 60px - 68px);
+    padding: 16px 20px !important;
+    padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+  }
+
+  .el-dialog__footer {
+    padding: 12px 20px !important;
+    padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
+    border-top: 1px solid #f4f4f5;
+  }
+
+  .el-dialog__footer .el-button { flex: 1; margin: 0 4px; }
+  .el-dialog__footer .dialog-footer { display: flex; width: 100%; }
+
+  /* ----------------------------------------------------------
+     消息确认弹窗
+     ---------------------------------------------------------- */
+  .el-message-box {
+    width: calc(100vw - 32px) !important;
+    max-width: 380px !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+  }
+
+  /* ----------------------------------------------------------
+     分页组件
+     ---------------------------------------------------------- */
+  .el-pagination .el-pager li,
+  .el-pagination .btn-prev,
+  .el-pagination .btn-next {
+    min-width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 8px !important;
+  }
+
+  /* ----------------------------------------------------------
+     按钮最小触摸高度
+     ---------------------------------------------------------- */
+  .el-button { min-height: 36px; }
+
+  /* ----------------------------------------------------------
+     下拉选择器
+     ---------------------------------------------------------- */
+  .el-select-dropdown__item {
+    height: 44px;
+    line-height: 44px;
+  }
+
+  /* ----------------------------------------------------------
+     表单 label top 模式
+     ---------------------------------------------------------- */
+  .el-form--label-top .el-form-item__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #3f3f46;
+    padding-bottom: 4px;
+  }
+
+  /* ----------------------------------------------------------
+     隐藏滚动条
+     ---------------------------------------------------------- */
+  ::-webkit-scrollbar { width: 0; height: 0; }
+
+  /* ----------------------------------------------------------
+     消息提示
+     ---------------------------------------------------------- */
+  .el-message {
+    min-width: 240px !important;
+    border-radius: 12px !important;
+    padding: 12px 18px !important;
+  }
+
+  /* ----------------------------------------------------------
+     Switch 触摸目标
+     ---------------------------------------------------------- */
+  .el-switch { min-height: 32px; }
+}
